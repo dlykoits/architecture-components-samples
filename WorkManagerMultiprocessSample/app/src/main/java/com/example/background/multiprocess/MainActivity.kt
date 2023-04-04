@@ -77,7 +77,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun buildOneTimeWorkRemoteWorkRequest(
+    // make it static public function so that it can be used in TestBroadcast.kt as well
+    fun buildOneTimeWorkRemoteWorkRequest(
         componentName: ComponentName
         , listenableWorkerClass: Class<out ListenableWorker>
     ): OneTimeWorkRequest {
@@ -93,5 +94,25 @@ class MainActivity : AppCompatActivity() {
         return OneTimeWorkRequest.Builder(listenableWorkerClass)
             .setInputData(data)
             .build()
+    }
+
+    companion object {
+
+        fun buildOneTimeWorkRemoteWorkRequest(
+            componentName: ComponentName, listenableWorkerClass: Class<out ListenableWorker>
+        ): OneTimeWorkRequest {
+
+            // ARGUMENT_PACKAGE_NAME and ARGUMENT_CLASS_NAME are used to determine the service
+            // that a Worker binds to. By specifying these parameters, we can designate the process a
+            // Worker runs in.
+            val data: Data = Data.Builder()
+                .putString(ARGUMENT_PACKAGE_NAME, componentName.packageName)
+                .putString(ARGUMENT_CLASS_NAME, componentName.className)
+                .build()
+
+            return OneTimeWorkRequest.Builder(listenableWorkerClass)
+                .setInputData(data)
+                .build()
+        }
     }
 }

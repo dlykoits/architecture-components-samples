@@ -17,13 +17,24 @@
 package com.example.background.multiprocess
 
 import android.app.Application
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.work.Configuration
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class TestApplication : Application(), Configuration.Provider {
+
+    val procName by lazy { android.os.Process.myProcessName() }
 
     override fun getWorkManagerConfiguration() =
         Configuration.Builder()
-            .setDefaultProcessName("com.example.background.multiprocess")
-            .setMinimumLoggingLevel(android.util.Log.DEBUG)
+            .setDefaultProcessName(procName)
+            .setMinimumLoggingLevel(Log.DEBUG)
             .build()
+
+    override fun onCreate() {
+        super.onCreate()
+        Log.d("sansay", "TestApplication.onCreate() $procName")
+    }
 }

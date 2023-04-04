@@ -15,8 +15,7 @@
   ~ limitations under the License.
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.background.multiprocess">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:name=".TestApplication"
@@ -48,6 +47,17 @@
             android:name=".RemoteWorkerService2"
             android:exported="false"
             android:process=":worker2" />
-    </application>
+
+        <receiver
+            android:name=".TestBroadcast"
+            android:exported="true"
+            android:process=":worker1" />
+
+        <receiver
+            android:name=".TestBroadcast2"
+            android:exported="true"
+            android:process=":worker2" />
+
+</application>
 
 </manifest>
